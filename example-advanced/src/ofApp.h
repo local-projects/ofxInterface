@@ -5,6 +5,20 @@
 #include "ScreenObject.h"
 #include "AppManager.h"
 
+#include "NotificationCenter.h"
+
+
+class MyData{
+	public :
+		MyData(){
+			ofLogNotice("MyData") << "create!";
+		}
+		~MyData(){
+			ofLogNotice("MyData") << "destroy!";
+		}
+
+};
+
 class ofApp : public ofBaseApp{
 
 	public:
@@ -29,4 +43,6 @@ class ofApp : public ofBaseApp{
     ofxInterface::Node* scene;
     AppManager * appMan;
     bool bShowDebug;
+
+	void onTestNotification(NotificationCenter::Notification& n);
 };

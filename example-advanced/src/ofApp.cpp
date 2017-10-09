@@ -1,5 +1,6 @@
 #include "ofApp.h"
 
+
 //--------------------------------------------------------------
 void ofApp::setup(){
     ofEnableSmoothing();
@@ -20,8 +21,17 @@ void ofApp::setup(){
     appMan->setName("AppManager");
     scene->addChild(appMan);
     appMan->setupManagers();
-    
+
+	NotificationCenter::one().addObserver(this, &ofApp::onTestNotification, "TestNotification");
+
 }
+
+
+void ofApp::onTestNotification(NotificationCenter::Notification& n){
+
+	ofLogNotice() << "notif: " << n.ID;
+}
+
 
 //--------------------------------------------------------------
 void ofApp::update(){
@@ -38,21 +48,29 @@ void ofApp::draw(){
     if(bShowDebug){
         scene->renderDebug();
     }
-
 }
 
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key){
     switch (key){
-            case 'd':
-                bShowDebug = !bShowDebug;
-            break;
-            case 'c':
-                ofLogNotice() << scene->getNumChildren();
-            break;
-            
+		case 'd':
+			bShowDebug = !bShowDebug;
+		break;
+		case 'c':
+			ofLogNotice() << scene->getNumChildren();
+		break;
+
+		case '1':{
+			shared_ptr<MyData> data (new MyData);
+			NotificationCenter::one().postNotification("TestNotification", data);
+		}break;
+
+		case '2':{
+			shared_ptr<MyData> data (new MyData);
+			NotificationCenter::one().postNotification("TestNotification2", data);
+		}break;
+
     }
-    
 }
 
 //--------------------------------------------------------------

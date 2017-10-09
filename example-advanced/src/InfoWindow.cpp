@@ -52,11 +52,11 @@ void InfoWindow::setup(ofVec2f size, ofVec2f position, string _id){
     
     //animations
     animation_dt = 1.0f / 60.0f; ;
-    animationDuration = 3.0f;
+    animationDuration = 1.0f;
     animVal.reset(0.0f);
     animVal.setRepeatType(PLAY_ONCE);
     animVal.setDuration(animationDuration);
-    animVal.setCurve(EASE_IN);
+    animVal.setCurve(TANH);
     animVal.animateFromTo(0.0f, 1.0f);
     endPosition = ofVec2f(ofRandom(ofGetWidth()), 10);
     startPosition = position;
