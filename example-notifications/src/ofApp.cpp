@@ -2,6 +2,7 @@
 
 using namespace ofxInterface;
 
+
 void ofApp::setup(){
 
 	ofBackground(22);
@@ -19,11 +20,12 @@ void ofApp::setup(){
 void ofApp::populateScene(){
 
 	float sizeX = 260;
-	float sizeY = 40;
+	float sizeY = 50;
 	float pad = 30;
 	int perRow = 3;
 
-	for (int i=0; i < perRow * 4; i++) {
+	for (int i=0; i < perRow * 3; i++) {
+
 		// setup them in a grid
 		float x = 40 + (i%perRow)*(sizeX+pad);
 		float y = 80 + (i/perRow)*(sizeY+pad);
@@ -50,6 +52,8 @@ void ofApp::update(){
 void ofApp::draw(){
 	scene->render();
 	scene->renderDebug();
+
+	ofDrawBitmapString("Press '1' to connect device. Press '2' to disconnect device.", 20, ofGetHeight() - 20);
 }
 
 
@@ -72,18 +76,18 @@ void ofApp::disconnectDevice(){
 	ofLogNotice("ofApp") << "device disconnected!";
 
 	//post a notification of type "deviceConnectedNotification", with no data attached.
-	ofxInterface::NotificationCenter::one().postNotification("deviceConnectedNotification", nullptr);
+	ofxInterface::NotificationCenter::one().postNotification("deviceDisconnectedNotification");
 }
 
 
 void ofApp::keyPressed(int key){
-	switch (key) {
 
+	switch (key) {
 		case '1':
 			connectDevice(); // pretend the device was connected
 			break;
-
-		case '2': disconnectDevice(); // pretend the device was disconnected
+		case '2':
+			disconnectDevice(); // pretend the device was disconnected
 			break;
 	}
 }
@@ -95,8 +99,8 @@ void ofApp::keyReleased(int key){
 
 
 void ofApp::mouseMoved(int x, int y ){
-}
 
+}
 
 
 void ofApp::mouseDragged(int x, int y, int button){
