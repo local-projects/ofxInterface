@@ -44,9 +44,16 @@
 
  The workflow to solve this problem with NotificationCenter would be:
 
- 1 - Make all the observers "tune in" for notfications of type "deviceConnected"
+ 1 - Define a custom Data Structure to attach in your notifications
+ 
+ 	struct MyNotificationData {
+		string myInfo;
+		float myValue;
+	};
 
- 	//in the setup() of each of the objects that wants to be notified
+ 2 - Make all the observers "tune in" for notfications of your desired ID ("MyNotificationType")
+
+ 	//in the setup() of each of the objects that wants to be notified for this Notification ID
  	NotificationCenter::one().addObserver(this, &MyClass::onMyNotification, "MyNotificationType");
  
  	//implement a callback for the notification
@@ -54,16 +61,10 @@
 		if (n.data){ //access the notification data if available
 			std::shared_ptr<MyNotificationData> notifData = std::static_pointer_cast<MyNotificationData>(n.data);
 			if (notifData){
+ 				//do stuff with your notification data
  			}
  		}
  	}
- 
- 2 - Define a custom Data Structure to attach in your notifications
- 
- 	struct MyNotificationData {
-		string myInfo;
-		float myValue;
-	};
 
  3 - Post notifications from whichever object needs to
  	
