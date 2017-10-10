@@ -9,6 +9,8 @@
 #pragma once
 #include "ofMain.h"
 
+namespace ofxInterface{
+
 class NotificationCenter{
 
 public:
@@ -18,10 +20,13 @@ public:
 		return instance;
 	}
 
+	struct NotificationData{
+
+	};
+
 	struct Notification{
 		string ID;
 		shared_ptr<void> data;
-
 		~Notification(){
 		}
 	};
@@ -30,7 +35,7 @@ public:
 
 	template <class ListenerClass>
 	void addObserver(ListenerClass * who,
-					 void (ListenerClass::*callback)(Notification&),
+					 void (ListenerClass::*callback)(Notification &),
 					 const string & notificationID
 					 ){
 
@@ -41,7 +46,6 @@ public:
 
 		auto & event = eventsByID[notificationID];
 		ofAddListener( event, who, callback );
-
 	}
 
 	////////////////////////////////////////////////////////////////////////////////////////////////
@@ -69,5 +73,6 @@ protected:
 
 };
 
+}
 
 //#include "NotificationCenter.inl"

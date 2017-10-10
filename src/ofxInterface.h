@@ -13,6 +13,7 @@
 #include "TouchEvent.h"
 #include "TouchManager.h"
 #include "VirtualTouch.h"
+#include "NotificationCenter.h"
 
 /******
  * include default components
