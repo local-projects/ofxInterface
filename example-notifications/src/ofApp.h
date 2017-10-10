@@ -34,8 +34,9 @@ public:
 		setPosition(x, y);
 		setSize(w, h);
 		/// Register myself (this) for Notifications of type "deviceConnectedNotification" and "deviceDisconnectedNotification"
-		ofxInterface::NotificationCenter::one().addObserver(this, &MyNode::onDeviceConnectedNotif, "deviceConnectedNotification");
-		ofxInterface::NotificationCenter::one().addObserver(this, &MyNode::onDeviceDisconnectedNotif, "deviceDisconnectedNotification");
+		ofxInterface::NotificationCenter & notifCenter = ofxInterface::NotificationCenter::one();
+		notifCenter.addObserver(this, &MyNode::onDeviceConnectedNotif, "deviceConnectedNotification");
+		notifCenter.addObserver(this, &MyNode::onDeviceDisconnectedNotif, "deviceDisconnectedNotification");
 	}
 
 	void drawDebug(){

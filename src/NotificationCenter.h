@@ -46,33 +46,39 @@
 
  1 - Define a custom Data Structure to attach in your notifications
  
- 	struct MyNotificationData {
+ 	 struct MyNotificationData {
 		string myInfo;
 		float myValue;
-	};
+	 };
 
  2 - Make all the observers "tune in" for notfications of your desired ID ("MyNotificationType")
 
- 	//in the setup() of each of the objects that wants to be notified for this Notification ID
- 	NotificationCenter::one().addObserver(this, &MyClass::onMyNotification, "MyNotificationType");
+ 	 //in the setup() of each of the objects that wants to be notified for this Notification ID
+ 	 NotificationCenter::one().addObserver(this, &MyClass::onMyNotification, "MyNotificationType");
  
- 	//implement a callback for the notification
- 	void MyClass::onMyNotification(NotificationCenter::Notification& n){
-		if (n.data){ //access the notification data if available
+ 	 //implement a callback for the notification
+ 	 void MyClass::onMyNotification(NotificationCenter::Notification& n){
+	 	if (n.data){ //access the notification data if available
 			std::shared_ptr<MyNotificationData> notifData = std::static_pointer_cast<MyNotificationData>(n.data);
 			if (notifData){
  				//do stuff with your notification data
  			}
  		}
- 	}
+ 	 }
 
  3 - Post notifications from whichever object needs to
  	
- 	//create custom data to send with the notification
-	shared_ptr<MyNotificationData> data = std::make_shared<MyNotificationData>();
-	data->myInfo = "My custom info";
-	NotificationCenter::one().postNotification("MyNotificationType", data);
+ 	 //create custom data to send with the notification
+	 shared_ptr<MyNotificationData> data = std::make_shared<MyNotificationData>();
+	 data->myInfo = "My custom info";
+	 NotificationCenter::one().postNotification("MyNotificationType", data);
+ 
+ 4 - When an object does not want to listen to more notifications (or it will be deleted) it must remove
+ 	 itself from the observer list
 
+ 	NotificationCenter::one().removeObserver(this, &MyClass::onMyNotification, "MyNotificationType");
+
+ 
  */
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -110,6 +116,20 @@ public:
 
 		auto & event = eventsByID[notificationID];
 		ofAddListener( event, who, callback );
+	}
+
+	////////////////////////////////////////////////////////////////////////////////////////////////
+
+	template <class ListenerClass>
+	void removeObserver(ListenerClass * who,
+						void (ListenerClass::*callback)(Notification &),
+						const string & notificationID){
+
+		auto it = eventsByID.find(notificationID);
+		if(it != eventsByID.end()){
+			auto & event = it->second;
+			ofRemoveListener( event, who, callback );
+		}
 	}
 
 	////////////////////////////////////////////////////////////////////////////////////////////////
