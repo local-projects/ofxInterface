@@ -26,15 +26,18 @@
  1 - the Notification Poster : someone who posts a notification on a certain channel
  2 - a Notification Observer: someone who is listenting for notifications in a certain channel
 
- Notifications include and ID and a custom object:
+ Notifications include an ID:
 
  	struct Notification{
 		string ID;
-		shared_ptr<void> data;
 	};
 
- so that develeopers can attach any kind of object to a Notification.
-
+ Developers who want to send extra data inside their notifications should make their own Notifications 
+ by subclassing
+ 
+ 	struct MyNotification : publicNotificationCenter::Notification{
+ 		//your stuff here
+ 	};
 
  For example:
 
@@ -58,27 +61,25 @@
  	 NotificationCenter::one().addObserver(this, &MyClass::onMyNotification, "MyNotificationType");
  
  	 //implement a callback for the notification
- 	 void MyClass::onMyNotification(NotificationCenter::Notification& n){
-	 	if (n.data){ //access the notification data if available
-			std::shared_ptr<MyNotificationData> notifData = std::static_pointer_cast<MyNotificationData>(n.data);
-			if (notifData){
- 				//do stuff with your notification data
- 			}
- 		}
+ 	 void MyClass::onMyNotification(NotificationCenter::Notification & n){
+ 		//obtain your custom notification data by downcasting
+		try{
+			MyNotificationData & n = static_cast<MyNotificationData&>(n);
+		}catch(const std::bad_cast& e){
+			ofLogError() << "type conversion error!";
+		}
  	 }
 
  3 - Post notifications from whichever object needs to
  	
  	 //create custom data to send with the notification
-	 shared_ptr<MyNotificationData> data = std::make_shared<MyNotificationData>();
-	 data->myInfo = "My custom info";
+	 MyNotificationData data;
 	 NotificationCenter::one().postNotification("MyNotificationType", data);
  
  4 - When an object does not want to listen to more notifications (or it will be deleted) it must remove
  	 itself from the observer list
 
  	NotificationCenter::one().removeObserver(this, &MyClass::onMyNotification, "MyNotificationType");
-
 
  */
 
@@ -97,9 +98,9 @@ public:
 
 	////////////////////////////////////////////////////////////////////////////////////////////////
 
-	struct Notification{
+	struct Notification{ //you may want to subclass this to attach custom content to your notifications...
 		string ID;
-		shared_ptr<void> data;
+		virtual ~Notification(){}; //make Notification a polymorphic object
 	};
 
 	////////////////////////////////////////////////////////////////////////////////////////////////
@@ -136,17 +137,16 @@ public:
 	////////////////////////////////////////////////////////////////////////////////////////////////
 
 	void postNotification(const string & notificationID){
-		postNotification(notificationID, nullptr);
+		Notification notif;
+		postNotification(notificationID, notif);
 	}
 
-	void postNotification(const string & notificationID, shared_ptr<void> data ){
+	void postNotification(const string & notificationID, Notification & notif ){
 
 		auto it = eventsByID.find(notificationID);
 		if(it != eventsByID.end()){
-			Notification n;
-			n.ID = notificationID;
-			n.data = data;
-			ofNotifyEvent(it->second, n, this);
+			notif.ID = notificationID;
+			ofNotifyEvent(it->second, notif, this);
 		}else{
 			ofLogError("NotificationCenter") << " can't post notification with ID \"" << notificationID << "\" because nobody is listening!";
 		}

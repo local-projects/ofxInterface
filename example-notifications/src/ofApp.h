@@ -9,7 +9,7 @@
 
 // Build my own notification data structure to attach to notifications
 
-struct MyNotificationData {
+struct MyNotificationData : public ofxInterface::NotificationCenter::Notification {
 
 	string myInfo;
 	float myValue;
@@ -47,22 +47,26 @@ public:
 	void onDeviceConnectedNotif(ofxInterface::NotificationCenter::Notification& n){
 		ofLogNotice("MyNode") << "onDeviceConnectedNotif()";
 		deviceAvailable = true;
-		if (n.data){
-			std::shared_ptr<MyNotificationData> notifData = std::static_pointer_cast<MyNotificationData>(n.data);
-			ofLogNotice("MyNode") << "Notification data \"" << notifData.get()->myInfo << "\" " << notifData.get()->myValue;
-		}else{
-			ofLogNotice("MyNode") << "no Notification data.";
+
+		//obtain your notification data by downcasting
+		try{
+			MyNotificationData & n = static_cast<MyNotificationData&>(n);
+			ofLogNotice() << n.myInfo << " " << n.myValue;
+		}catch(const std::bad_cast& e){
+			ofLogError() << "type conversion error!";
 		}
 	}
 
 	void onDeviceDisconnectedNotif(ofxInterface::NotificationCenter::Notification& n){
 		ofLogNotice("MyNode") << "onDeviceDisconnectedNotif()";
 		deviceAvailable = false;
-		if (n.data){
-			std::shared_ptr<MyNotificationData> notifData = std::static_pointer_cast<MyNotificationData>(n.data);
-			ofLogNotice("MyNode") << "Notification data \"" << notifData.get()->myInfo << "\" " << notifData.get()->myValue;
-		}else{
-			ofLogNotice("MyNode") << "no Notification data.";
+
+		//obtain your notification data by downcasting
+		try{
+			MyNotificationData & n = static_cast<MyNotificationData&>(n);
+			ofLogNotice() << n.myInfo << " " << n.myValue;
+		}catch(const std::bad_cast& e){
+			ofLogError() << "type conversion error!";
 		}
 	}
 

@@ -62,9 +62,9 @@ void ofApp::connectDevice(){
 	ofLogNotice("ofApp") << "## Device Connected! ######################################################";
 
 	//create custom data to send with the notification
-	shared_ptr<MyNotificationData> data = std::make_shared<MyNotificationData>();
-	data->myInfo = "device #";
-	data->myValue = ofRandom(1);
+	MyNotificationData data;
+	data.myInfo = "device #";
+	data.myValue = ofRandom(1);
 
 	//post a notification of type "deviceConnectedNotification", attach custom data to it
 	ofxInterface::NotificationCenter::one().postNotification("deviceConnectedNotification", data);
@@ -94,12 +94,10 @@ void ofApp::keyPressed(int key){
 
 
 void ofApp::keyReleased(int key){
-
 }
 
 
 void ofApp::mouseMoved(int x, int y ){
-
 }
 
 
@@ -116,4 +114,3 @@ void ofApp::mousePressed(int x, int y, int button){
 void ofApp::mouseReleased(int x, int y, int button){
 	TouchManager::one().touchUp(button, ofVec2f(x, y));
 }
-
