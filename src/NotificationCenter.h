@@ -15,10 +15,11 @@
 
  NotificationCenter proposal
 
- The idea behind this is to have a "Mailbox" anyone can refer to to send and recieve messages.
+ The idea behind this is to have a "Mailbox" anyone can refer to to send and receive messages.
  To receive notifications, one must first register itself to do so.
  There are different notification "channels" - one can "post to" and/or "subscribe for" to a certain
- channel/type of notifications. Notificatons are distinguished by an ID(string) the developer supplies.
+ channel/type of notifications. Notifications are distinguished by an ID(string) the developer supplies.
+ This is pretty much a copy of NSNotification found in the Cocoa interfaces.
 
  For a Notification to happen, we need at least 2 entities:
 
@@ -78,7 +79,7 @@
 
  	NotificationCenter::one().removeObserver(this, &MyClass::onMyNotification, "MyNotificationType");
 
- 
+
  */
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////

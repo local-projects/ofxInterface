@@ -59,7 +59,7 @@ void ofApp::draw(){
 
 void ofApp::connectDevice(){
 
-	ofLogNotice("ofApp") << "device connected!";
+	ofLogNotice("ofApp") << "## Device Connected! ######################################################";
 
 	//create custom data to send with the notification
 	shared_ptr<MyNotificationData> data = std::make_shared<MyNotificationData>();
@@ -73,7 +73,7 @@ void ofApp::connectDevice(){
 
 void ofApp::disconnectDevice(){
 
-	ofLogNotice("ofApp") << "device disconnected!";
+	ofLogNotice("ofApp") << "## Device Disconnected! ###################################################";
 
 	//post a notification of type "deviceConnectedNotification", with no data attached.
 	ofxInterface::NotificationCenter::one().postNotification("deviceDisconnectedNotification");
