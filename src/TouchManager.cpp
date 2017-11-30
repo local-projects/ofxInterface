@@ -95,7 +95,7 @@ void TouchManager::draw(){
 	map<int, TouchEvent*>::iterator it = touches.begin();
 	for (;it!=touches.end(); it++){
 		if(it->second){
-			ofSetColor(255, 128);
+			ofSetColor(255, 0, 0, 128);
 			ofDrawCircle(it->second->position, 20);
 			points.addVertex(ofVec3f(it->second->position));
 			ofSetColor(255);
