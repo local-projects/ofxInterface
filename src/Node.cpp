@@ -211,6 +211,35 @@ void Node::renderDebug(bool forceAll)
 	}
 }
 
+
+void Node::updateSubtreeWithTimings(float dt, string & timingResult, int & index, bool forceAll) {
+	
+	float t = ofGetElapsedTimef();
+	update(dt);
+	t = ofGetElapsedTimef() - t;
+	string line;
+	for (int i = 0; i < index; i++) {
+		line += "  ";
+	}
+	if (t > 0.1) {
+		timingResult += line + "\"" + getName() + "\" (" + typeid(*this).name() + ") : " + ofToString(t) + "\n";
+	}
+	index++;
+
+	std::vector<Node*>::iterator it;
+	for (it = childNodes.begin(); it != childNodes.end(); it++){
+		if (forceAll) {
+			(*it)->updateSubtreeWithTimings(dt, timingResult, index, forceAll);
+		}else {
+			if ((*it)->getVisible() || (*it)->bNodeUpdateWhenHidden) {
+				(*it)->updateSubtreeWithTimings(dt, timingResult, index, forceAll);
+			}
+		}
+	}
+	index--;
+}
+
+
 void Node::updateSubtree(float dt, bool forceAll)
 {
 	update(dt);

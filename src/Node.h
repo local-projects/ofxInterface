@@ -106,6 +106,7 @@ public:
      */
 	void updateSubtree(float dt, bool forceAll=false);
 	void updateSubtreePostOrder(float dt, bool forceAll=false);
+	void updateSubtreeWithTimings(float dt, string & timingResult, int & index, bool forceAll);
 
 	// set this for nodes that are rendered offline and still want to update (without forceall),
 	void setUpdateWhenHidden(bool set) { bNodeUpdateWhenHidden = set; }
