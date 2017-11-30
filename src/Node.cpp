@@ -214,14 +214,15 @@ void Node::renderDebug(bool forceAll)
 
 void Node::updateSubtreeWithTimings(float dt, string & timingResult, int & index, bool forceAll) {
 	
-	float t = ofGetElapsedTimef();
+	float t = ofGetElapsedTimef() * 1000.0f;
 	update(dt);
-	t = ofGetElapsedTimef() - t;
+	t = ofGetElapsedTimef() * 1000.0f - t;
 	string line;
 	for (int i = 0; i < index; i++) {
-		line += "  ";
+		line += "   ";
 	}
-	if (t > 0.1) {
+	//if (t > 0.001) { //more than x ms
+	if(childNodes.size() > 0 || t > 0.1){ //ignore leave nodes unless they take a long time
 		timingResult += line + "\"" + getName() + "\" (" + typeid(*this).name() + ") : " + ofToString(t) + "\n";
 	}
 	index++;
