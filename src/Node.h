@@ -100,12 +100,18 @@ public:
 	 */
 	void render(bool forceAll = false);
 	void renderDebug(bool forceAll = false);	// same as render but calls drawDebug instead of draw.
+	
+	void renderWithTimings(string & timingResult, bool forceAll);
+	void recursiveTimingHelper(bool forceAll, string & timingInfo, unordered_map<Node*,float> & timingData, int index);
     
     /******
      * call the 'update' function of !!visible!! children
      */
 	void updateSubtree(float dt, bool forceAll=false);
 	void updateSubtreePostOrder(float dt, bool forceAll=false);
+	
+	//update with benchmarks built in; pass in empty string and index = 0;
+	//timingResult will contain the most relevant Node time measurements
 	void updateSubtreeWithTimings(float dt, string & timingResult, int & index, bool forceAll);
 
 	// set this for nodes that are rendered offline and still want to update (without forceall),
