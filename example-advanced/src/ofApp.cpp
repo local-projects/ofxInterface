@@ -22,12 +22,12 @@ void ofApp::setup(){
     scene->addChild(appMan);
     appMan->setupManagers();
 
-	NotificationCenter::one().addObserver(this, &ofApp::onTestNotification, "TestNotification");
+	ofxInterface::NotificationCenter::one().addObserver(this, &ofApp::onTestNotification, "TestNotification");
 
 }
 
 
-void ofApp::onTestNotification(NotificationCenter::Notification& n){
+void ofApp::onTestNotification(ofxInterface::NotificationCenter::Notification& n){
 
 	ofLogNotice() << "notif: " << n.ID;
 }
@@ -61,13 +61,13 @@ void ofApp::keyPressed(int key){
 		break;
 
 		case '1':{
-			shared_ptr<MyData> data (new MyData);
-			NotificationCenter::one().postNotification("TestNotification", data);
+			MyData data;
+			ofxInterface::NotificationCenter::one().postNotification("TestNotification", data);
 		}break;
 
 		case '2':{
-			shared_ptr<MyData> data (new MyData);
-			NotificationCenter::one().postNotification("TestNotification2", data);
+			MyData data;
+			ofxInterface::NotificationCenter::one().postNotification("TestNotification2", data);
 		}break;
 
     }

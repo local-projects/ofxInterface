@@ -8,15 +8,16 @@
 #include "NotificationCenter.h"
 
 
-class MyData{
+struct MyData : public ofxInterface::NotificationCenter::Notification{
 	public :
 		MyData(){
-			ofLogNotice("MyData") << "create!";
+			ofLogNotice("MyData") << "MyData()";
+
 		}
 		~MyData(){
-			ofLogNotice("MyData") << "destroy!";
-		}
+			ofLogNotice("MyData") << "~MyData()";
 
+		}
 };
 
 class ofApp : public ofBaseApp{
@@ -44,5 +45,5 @@ class ofApp : public ofBaseApp{
     AppManager * appMan;
     bool bShowDebug;
 
-	void onTestNotification(NotificationCenter::Notification& n);
+	void onTestNotification(ofxInterface::NotificationCenter::Notification& n);
 };
