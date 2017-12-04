@@ -50,8 +50,8 @@ public:
 
 		//obtain your notification data by downcasting
 		try{
-			MyNotificationData & n = static_cast<MyNotificationData&>(n);
-			ofLogNotice() << n.myInfo << " " << n.myValue;
+			MyNotificationData & n2 = static_cast<MyNotificationData&>(n);
+			ofLogNotice() << n2.myInfo << " " << n2.myValue;
 		}catch(const std::bad_cast& e){
 			ofLogError() << "type conversion error!";
 		}
@@ -63,8 +63,8 @@ public:
 
 		//obtain your notification data by downcasting
 		try{
-			MyNotificationData & n = static_cast<MyNotificationData&>(n);
-			ofLogNotice() << n.myInfo << " " << n.myValue;
+			MyNotificationData & n2 = static_cast<MyNotificationData&>(n);
+			ofLogNotice() << n2.myInfo << " " << n2.myValue;
 		}catch(const std::bad_cast& e){
 			ofLogError() << "type conversion error!";
 		}
