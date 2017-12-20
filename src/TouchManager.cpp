@@ -224,7 +224,7 @@ void TouchManager::dispatchTouchMove(int id, const ofVec2f &p)
 	// check if this touch exists
 	map<int, TouchEvent*>::iterator eventIt = touches.find(id);
 	if (eventIt == touches.end()) {
-		ofLogWarning("TouchManager", "received touchMove for id (%d) without touchDown. ignoring this touch.", id);
+		//ofLogWarning("TouchManager", "received touchMove for id (%d) without touchDown. ignoring this touch.", id);
 		return;
 	}
 
@@ -296,7 +296,7 @@ void TouchManager::dispatchTouchUp(int id, const ofVec2f &p)
 	// check if this touch exists
 	map<int, TouchEvent*>::iterator eventIt = touches.find(id);
 	if (eventIt == touches.end()) {
-		ofLogWarning("TouchManager", "received touchUp for id (%d) without touchDown. ignoring this touch.", id);
+		//ofLogWarning("TouchManager", "received touchUp for id (%d) without touchDown. ignoring this touch.", id);
 		return;
 	}
 
