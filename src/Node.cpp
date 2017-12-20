@@ -211,6 +211,124 @@ void Node::renderDebug(bool forceAll)
 	}
 }
 
+
+void Node::renderWithTimings(string & timingResult, bool forceAll){
+	
+	std::list<Node*> sortedNodes;
+	std::list<Node*>::iterator it;
+	
+	if (forceAll) {
+		// get all nodes (visible and invisible)
+		getSubTreeList(sortedNodes);
+	}
+	else {
+		// get only visible nodes
+		getVisibleSubTreeList(sortedNodes);
+	}
+	
+	// sort scene by z (+z goes outside of the screen), plane is z
+	sortedNodes.sort(Node::bottomPlaneFirst);
+	
+	unordered_map<Node*,float> renderTimes;
+	
+	for (it=sortedNodes.begin(); it!=sortedNodes.end(); it++){
+		ofPushStyle();
+		ofPushMatrix();
+		ofMultMatrix((*it)->getGlobalTransformMatrix());
+		// use anchor
+		
+		if ((*it)->getGlobalRenderClip()) {
+			(*it)->enableScissor((*it)->getRenderClipRect());
+		}
+		
+		float t = ofGetElapsedTimef() * 1000.0f;
+		(*it)->draw();
+		t = ofGetElapsedTimef() * 1000.0f - t;
+		
+		renderTimes[*it] = t;
+		
+		if ((*it)->getGlobalRenderClip()) {
+			(*it)->disableScissor();
+		}
+		
+		ofPopMatrix();
+		ofPopStyle();
+	}
+	
+	int index = 0;
+	this->recursiveTimingHelper(forceAll, timingResult, renderTimes, index);
+}
+	
+	
+void Node::recursiveTimingHelper(bool forceAll, string & timingInfo, unordered_map<Node*,float> & timingData, int index){
+	
+	float myTime = timingData[this];
+	index++;
+
+	Node * start = this;
+	float timeAccum = myTime;
+	
+	std::queue<Node*> nodes;
+	nodes.push(this);
+	
+	while(nodes.size()){ //iterativally walk the children to add up their times
+		Node * n = nodes.front();
+		timeAccum += timingData[n];
+		nodes.pop();
+		
+		for(auto c : n->childNodes){
+			nodes.push(c);
+		}
+	}
+	
+	for (auto it = childNodes.begin(); it != childNodes.end(); it++){
+		if (forceAll) {
+			(*it)->recursiveTimingHelper(forceAll, timingInfo, timingData, index);
+		}
+		else {
+			if ((*it)->getVisible() || (*it)->bNodeUpdateWhenHidden) {
+				(*it)->recursiveTimingHelper(forceAll, timingInfo, timingData, index);
+			}
+		}
+	}
+	index--;
+	string line;
+	for (int i = 0; i < index; i++){ line += "   ";}
+	
+	if((childNodes.size() > 0 || myTime > 0.1) ){ //ignore leave nodes unless they take a long time
+		timingInfo = line + "+ \"" + getName() + "\" (" + typeid(*this).name() + ") : " + ofToString(timeAccum,2) + " | " + ofToString(myTime,2) + "\n" + timingInfo;
+	}
+}
+	
+
+void Node::updateSubtreeWithTimings(float dt, string & timingResult, int & index, bool forceAll) {
+	
+	float t = ofGetElapsedTimef() * 1000.0f;
+	update(dt);
+	index++;
+
+	std::vector<Node*>::iterator it;
+	for (it = childNodes.begin(); it != childNodes.end(); it++){
+		if (forceAll) {
+			(*it)->updateSubtreeWithTimings(dt, timingResult, index, forceAll);
+		}else {
+			if ((*it)->getVisible() || (*it)->bNodeUpdateWhenHidden) {
+				(*it)->updateSubtreeWithTimings(dt, timingResult, index, forceAll);
+			}
+		}
+	}
+	index--;
+	
+	t = ofGetElapsedTimef() * 1000.0f - t;
+	string line;
+	for (int i = 0; i < index; i++){line += "   ";}
+	
+	if((childNodes.size() > 0 || t > 0.3) && t > 0.1){ //ignore leave nodes unless they take a long time
+		timingResult = line + "+ \"" + getName() + "\" (" + typeid(*this).name() + ") : " + ofToString(t,2) + "\n" + timingResult;
+	}
+}
+
+
 void Node::updateSubtree(float dt, bool forceAll)
 {
 	update(dt);
