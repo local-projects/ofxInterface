@@ -367,7 +367,6 @@ void TouchManager::dispatchTouchScroll(int id, const ofVec2f& p, const ofVec2f& 
 	event->id = id;
 	event->firstPosition = event->position = event->prevPosition = p;
 	event->scroll = scroll;
-	touches[id] = event;
 
 	Node *receiver = getComponentUnder(p);
 	if (receiver == NULL) {
