@@ -25,7 +25,8 @@ public:
         TYPE_MOVE,
         TYPE_EXIT,
         TYPE_ENTER,
-        TYPE_CLICK
+        TYPE_CLICK,
+		TYPE_SCROLLWHEEL
     };
 
 	TouchEvent();
@@ -43,6 +44,7 @@ public:
 	ofVec2f velocity;
 	ofVec2f prevVelocity;
 	ofVec2f velocitySmoothed;
+	ofVec2f scroll;				//
 	float travelDistance;
 	unsigned long long timestamp;
 	unsigned long long prevTimestamp;

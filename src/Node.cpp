@@ -354,6 +354,7 @@ void Node::touchDown(int id,  TouchEvent* event)
 	ofNotifyEvent(eventTouchDown, *event);
 }
 
+
 void Node::touchMove(int id,  TouchEvent* event)
 {
 	if (bNodeAllowOneTouch && id != nodeCurrentTouchId) {
@@ -391,6 +392,16 @@ void Node::touchUp(int id,  TouchEvent* event)
 
 	bNodeTouched = false;
 }
+
+
+void Node::touchScroll(int id,  TouchEvent* event)
+{
+	if (bNodeAllowOneTouch && bNodeTouched && nodeCurrentTouchId!=id) {
+		return;
+	}
+	ofNotifyEvent(eventTouchScroll, *event);
+}
+
 
 void Node::touchExit(int id, TouchEvent *event)
 {

@@ -78,6 +78,7 @@ public:
 	ofEvent<TouchEvent> eventTouchDown;
 	ofEvent<TouchEvent> eventTouchMove;
 	ofEvent<TouchEvent> eventTouchUp;
+	ofEvent<TouchEvent> eventTouchScroll;
 	ofEvent<TouchEvent> eventTouchExit;
 	ofEvent<TouchEvent> eventTouchEnter;
 	ofEvent<TouchEvent> eventClick;
@@ -476,6 +477,7 @@ private:
     void touchDown(int id, TouchEvent* event);
     void touchMove(int id,  TouchEvent* event);
     void touchUp(int id,  TouchEvent* event);
+	void touchScroll(int id,  TouchEvent* event);
     void touchExit(int id, TouchEvent* event);
     void touchEnter(int id, TouchEvent* event);
 };

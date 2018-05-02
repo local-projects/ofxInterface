@@ -79,6 +79,10 @@ void TouchManager::update(float dt)
 			case TOUCH_UP:
 				dispatchTouchUp(t->id, t->pos);
 				break;
+			case TOUCH_SCROLL:
+				dispatchTouchScroll(t->id, t->pos, t->scroll);
+				break;
+
 			}
 		}
 	}
@@ -191,6 +195,25 @@ void TouchManager::touchUp(int id, const ofVec2f& p)
 	}
 	else {
 		dispatchTouchUp(id, p);
+	}
+}
+
+void TouchManager::touchScroll(int id, const ofVec2f& p, const ofVec2f& scroll)
+{
+	if (scene == NULL) {
+		ofLogError("TouchManager") << "touchScroll before setup. please call TouchManager::one().setup first";
+		return;
+	}
+
+	if (bUpdateDispatch) {
+		// queue touch to be dispatched in update
+		TouchAction t(TOUCH_SCROLL, id, p, scroll);
+		mutex.lock();
+		touchQueue.push_back(t);
+		mutex.unlock();
+	}
+	else {
+		dispatchTouchScroll(id, p, scroll);
 	}
 }
 
@@ -334,6 +357,32 @@ void TouchManager::dispatchTouchUp(int id, const ofVec2f &p)
 	ofNotifyEvent(eventEveryTouchUp, *event, this);
 
 	endTouch(id);
+}
+
+
+
+void TouchManager::dispatchTouchScroll(int id, const ofVec2f& p, const ofVec2f& scroll)
+{
+	TouchEvent *event = new TouchEvent();
+	event->id = id;
+	event->firstPosition = event->position = event->prevPosition = p;
+	event->scroll = scroll;
+	touches[id] = event;
+
+	Node *receiver = getComponentUnder(p);
+	if (receiver == NULL) {
+		ofLogError("TouchManager","could not find node for touchScroll");
+		return;
+	}
+
+	event->setReceiver(receiver);
+	event->lastSeenAbove = receiver;
+    event->type = TouchEvent::TYPE_SCROLLWHEEL;
+
+	// dispatch the event to the receiver
+	receiver->touchScroll(id, event);
+
+	ofNotifyEvent(eventEveryTouchScroll, *event, this);
 }
 
 void TouchManager::endTouch(int id)

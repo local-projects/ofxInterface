@@ -43,6 +43,7 @@ public:
 	void touchDown(int id, const ofVec2f& p);
 	void touchMove(int id, const ofVec2f& p);
 	void touchUp(int id, const ofVec2f& p);
+	void touchScroll(int id, const ofVec2f& p, const ofVec2f & scroll);
 
 	/******
 	 * Registering to the events below will give you all the events
@@ -51,6 +52,7 @@ public:
 	ofEvent<TouchEvent> eventEveryTouchDown;
 	ofEvent<TouchEvent> eventEveryTouchMove;
 	ofEvent<TouchEvent> eventEveryTouchUp;
+	ofEvent<TouchEvent> eventEveryTouchScroll;
 
 	// get top-most component under point
 	Node* getComponentUnder(const ofVec2f &p);
@@ -91,6 +93,7 @@ private:
 	void dispatchTouchDown(int id, const ofVec2f& p);
 	void dispatchTouchMove(int id, const ofVec2f& p);
 	void dispatchTouchUp(int id, const ofVec2f& p);
+	void dispatchTouchScroll(int id, const ofVec2f& p, const ofVec2f& scroll);
 
 	// done in post-order right-to-left so list will have the topmost nodes first
 	void fillComponentsUnder(Node* root, const ofVec2f &p, std::list<Node*>& list);
@@ -102,13 +105,17 @@ private:
 	 * for update dispatch
 	 * (private things you should not care about
 	 */
-	enum TouchActionType{ TOUCH_DOWN, TOUCH_MOVE, TOUCH_UP };
+	enum TouchActionType{ TOUCH_DOWN, TOUCH_MOVE, TOUCH_UP, TOUCH_SCROLL };
 
 	struct TouchAction{
 		TouchActionType actionType;
 		int id;
 		ofVec2f pos;
-		TouchAction(TouchActionType a, int _id, ofVec2f p) {
+		ofVec2f scroll;
+		TouchAction(TouchActionType a, int _id, const ofVec2f & p) {
+			actionType = a; id = _id; pos = p;
+		}
+		TouchAction(TouchActionType a, int _id, const ofVec2f & p, const ofVec2f & scroll) {
 			actionType = a; id = _id; pos = p;
 		}
 	};
