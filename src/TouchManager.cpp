@@ -376,7 +376,7 @@ void TouchManager::dispatchTouchScroll(int id, const ofVec2f& p, const ofVec2f& 
 
 	event->setReceiver(receiver);
 	event->lastSeenAbove = receiver;
-    event->type = TouchEvent::TYPE_SCROLLWHEEL;
+	event->type = TouchEvent::TYPE_SCROLLWHEEL;
 
 	// dispatch the event to the receiver
 	receiver->touchScroll(id, event);

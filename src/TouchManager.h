@@ -116,7 +116,7 @@ private:
 			actionType = a; id = _id; pos = p;
 		}
 		TouchAction(TouchActionType a, int _id, const ofVec2f & p, const ofVec2f & scroll) {
-			actionType = a; id = _id; pos = p;
+			actionType = a; id = _id; pos = p; this->scroll = scroll;
 		}
 	};
 	vector<TouchAction> touchQueue;

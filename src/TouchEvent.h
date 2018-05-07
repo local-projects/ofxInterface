@@ -19,15 +19,15 @@ class Node;
 class TouchEvent
 {
 public:
-    enum EventType{
-        TYPE_UP,
-        TYPE_DOWN,
-        TYPE_MOVE,
-        TYPE_EXIT,
-        TYPE_ENTER,
-        TYPE_CLICK,
+	enum EventType{
+		TYPE_UP,
+		TYPE_DOWN,
+		TYPE_MOVE,
+		TYPE_EXIT,
+		TYPE_ENTER,
+		TYPE_CLICK,
 		TYPE_SCROLLWHEEL
-    };
+	};
 
 	TouchEvent();
 	~TouchEvent();
