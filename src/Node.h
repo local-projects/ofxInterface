@@ -175,6 +175,8 @@ public:
 	void setWidth(float w) { size.x = w; ofNotifyEvent(eventNodeSizeChanged, *this, this); }
 	virtual float getHeight() { return getSize().y; }
 	void setHeight(float h) { size.y = h; ofNotifyEvent(eventNodeSizeChanged, *this, this); }
+	void setFrame(const ofRectangle & rect){ setPosition(ofVec2f(rect.x, rect.y)); setSize(rect.width, rect.height);}
+
 	float getLocalWidth() { return getSize().x * getScale().x; }
 	float getLocalHeight() { return getSize().y * getScale().y; }
 	float getGlobalHeight() { return getSize().y * getGlobalScale().y; }
