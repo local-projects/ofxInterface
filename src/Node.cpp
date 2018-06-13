@@ -94,6 +94,12 @@ Node* Node::getChildWithName(const std::string &searchName, int searchDepth) con
     return NULL;
 }
 
+
+Node* Node::getParent() const{
+	return (Node*) ofNode::getParent();
+}
+	
+
 Node* Node::getParentWithName(const std::string &searchName, int searchDepth) const
 {
 	if (searchName == name) {
@@ -252,7 +258,7 @@ void Node::updateSubtreePostOrder(float dt, bool forceAll)
 bool Node::getGlobalRenderClip()
 {
 	if (getParent() != NULL) {
-		return bClipRender || ((Node*)getParent())->getGlobalRenderClip();
+		return bClipRender || (getParent())->getGlobalRenderClip();
 	}
 	else {
 		return bClipRender;
@@ -263,7 +269,7 @@ ofRectangle Node::getRenderClipRect()
 {
 	ofRectangle parentRect;
 	if (getParent() != NULL) {
-		parentRect = ((Node*)getParent())->getRenderClipRect();
+		parentRect = (getParent())->getRenderClipRect();
 	}
 	ofRectangle rect;
 	if (bClipRender) {
