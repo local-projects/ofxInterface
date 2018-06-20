@@ -120,18 +120,21 @@ Node* Node::getParentWithName(const std::string &searchName, int searchDepth) co
 void Node::drawDebug()
 {
 	// draw border
-	ofSetLineWidth(1);
 	ofNoFill();
-	ofSetColor(debugBorderColor);
+	if(bEnabled){
+		ofSetColor(debugBorderColor);
+	}else{
+		ofSetColor(255,0,255,128);
+	}
 
 	drawBounds();
 	#ifdef OFXUINODE_DEBUG
 	debugBorderColor = debugBorderColor.lerp(defaultNodeColor, 0.05);
 	#endif
 
-	stringstream ss;
-	ss<<name<<" (plane: "<<getGlobalPlane()<<((bVisible)?", visible":"")<<")";
-	ofDrawBitmapString(ss.str(), 0, -3);
+	string msg = "name: " + name + " plane:" + ofToString(getGlobalPlane()) + " vis: " +
+	ofToString(bVisible) + " ena: " + ofToString(bEnabled);
+	ofDrawBitmapString(msg, 0, -3);
 
 #ifdef USE_OFX_HISTORY_PLOT
 	if (historyPlot != NULL) {
