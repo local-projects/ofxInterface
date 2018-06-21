@@ -132,8 +132,8 @@ void Node::drawDebug()
 	debugBorderColor = debugBorderColor.lerp(defaultNodeColor, 0.05);
 	#endif
 
-	string msg = "name: " + name + " plane:" + ofToString(getGlobalPlane()) + " vis: " +
-	ofToString(bVisible) + " ena: " + ofToString(bEnabled);
+	string msg = "n: " + name + " p:" + ofToString(getGlobalPlane(),1) + " v: " +
+	ofToString(bVisible) + " e: " + ofToString(bEnabled);
 	ofDrawBitmapString(msg, 0, -3);
 
 #ifdef USE_OFX_HISTORY_PLOT
