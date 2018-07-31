@@ -169,7 +169,9 @@ public:
      */
     virtual ofVec2f getSize() { return size; }
 	virtual void setSize(float w, float h) { size.set(w, h); ofNotifyEvent(eventNodeSizeChanged, *this, this); }
-	virtual void setSize(const ofVec2f& s) { Node::setSize(s.x, s.y);}
+	virtual void setSize(const ofVec2f& s) {
+        Node::setSize(s.x, s.y);
+    }
 	virtual float getWidth() { return getSize().x; }
 	void setWidth(float w) { size.x = w; ofNotifyEvent(eventNodeSizeChanged, *this, this); }
 	virtual float getHeight() { return getSize().y; }
