@@ -154,7 +154,7 @@ void VirtualTouch::draw()
 
 	ofPushMatrix();
 	ofTranslate(currentPos);
-	ofRotate(fingerTexRotation, 0, 0, 1);
+	ofRotateDeg(fingerTexRotation, 0, 0, 1);
 	ofScale(fingerTexScale, fingerTexScale, fingerTexScale);
 	fingerTex->draw(-fingerTex->getWidth()*fingerTexHotSpotAnchor.x,
 					-fingerTex->getHeight()*fingerTexHotSpotAnchor.y);
