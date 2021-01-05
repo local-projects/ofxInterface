@@ -393,10 +393,11 @@ void Node::touchUp(int id,  TouchEvent* event)
 	}
 #endif
 
-	ofNotifyEvent(eventTouchUp, *event);
+	
 	if (contains(event->position)) {
 		ofNotifyEvent(eventClick, *event);
 	}
+    ofNotifyEvent( eventTouchUp, *event );
 
 	bNodeTouched = false;
 }
